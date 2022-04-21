@@ -1,5 +1,7 @@
 from model import Player
 from itertools import islice
+import itertools
+
 
 
 NOMBRE_DE_JOUEURS = 4
@@ -64,10 +66,17 @@ class Controller:
                                         # en ordre croissant
         return self.players #ranking_list
 
-    def matchs_list(self, players):
+    def matchs_list1(self, players):
         """détermine l'appariement des joueurs pour la première ronde"""
         self.zip_list = zip(players, islice(players,
                                      INDICE_NOMBRE_DE_JOUEURS_MOITIE, None))
+        self.matchs = list(self.zip_list)
+        return self.matchs
+
+    def matchs_list2(self, players):
+        """détermine l'appariement des joueurs pour les parties suivantes"""
+        self.zip_list = zip(islice(players, 0, None, 2),
+                          islice(players, 1, None, 2))
         self.matchs = list(self.zip_list)
         return self.matchs
 
@@ -89,11 +98,13 @@ class Controller:
         self.view.prompt_for_new_game()
         self.sort_players_by_ranking()
         self.view.show_players_scores(self.players)
-        self.view.show_first_round(self.matchs_list(self.players))
+        self.view.show_round(self.matchs_list1(self.players))
 
         running = True
         while running:
             self.get_players_scores(self.players)
             self.view.show_players_scores(self.players)
-            """mettre ici une fonction qui réapparie les joueurs en fonction de leur score"""
+            self.view.show_round(self.matchs_list2(self.players)
+                                 )
+
             running = self.view.prompt_for_new_game()

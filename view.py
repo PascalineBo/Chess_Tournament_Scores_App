@@ -68,20 +68,25 @@ class View:
 
     def prompt_for_scores(self,player):
         """Demande les scores des joueurs"""
-        print("score de " + player[0] +":")
-        score = int(input())
+        print("score de " + player[0] +"(marquez les décimaux avec un point):")
+        score = float(input())
         return score
 
     def prompt_for_new_game(self):
         print("Ronde n°")
-        choice = input("(saisir un entier supérieur à 0):  ")
-        if int(choice) > NOMBRE_DE_RONDES:
+        round_number = input("(saisir un entier supérieur à 0):  ")
+        if int(round_number) > NOMBRE_DE_RONDES:
             return False
-        return True
+        return round_number
 
-    def show_first_round(self, matchs):
+    def show_round_number(self):
+        round_number = self.prompt_for_new_game()
+        return round_number
+
+    def show_round(self, matchs):
         """Appariement pour le premier tour - tournoi Suisse"""
-        print(f'les premiers matchs sont:{matchs}')
+        round_number = self.show_round_number()
+        print(f'les matchs du Round {round_number} sont:{matchs}')
 
     def show_players_scores(self, players):
         print(players)
