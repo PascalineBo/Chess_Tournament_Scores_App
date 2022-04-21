@@ -1,10 +1,9 @@
 from model import Player
-from view import View
 from itertools import islice
 
 
-NOMBRE_DE_JOUEURS = 8
-INDICE_NOMBRE_DE_JOUEURS_MOITIE = NOMBRE_DE_JOUEURS // 2 + 1
+NOMBRE_DE_JOUEURS = 4
+INDICE_NOMBRE_DE_JOUEURS_MOITIE = NOMBRE_DE_JOUEURS // 2
 
 
 class TournamentData:
@@ -14,7 +13,7 @@ class TournamentData:
         self.tournament = []
 
         #views
-        self.view = View()
+        self.view = view
 
     def get_tournament_data(self):
         name_tournament = self.view.prompt_for_tournament_name()
@@ -24,41 +23,55 @@ class TournamentData:
         date = self.view.prompt_for_date()
         self.tournament.append(date)
 
-class PlayersData:
-    """serialize Players Data"""
+class Controller:
+    """get and serializes Players Data"""
     def __init__(self,view):
         #models
         self.players = []
+        self.matchs = []
 
         # views
-        self.view = View()
+        self.view = view
 
     def get_players_data(self):
-        while len(self.players_data) < NOMBRE_DE_JOUEURS:
+        while len(self.players) < NOMBRE_DE_JOUEURS:
             fullname_player = self.view.prompt_for_fullname_player()
             ranking = self.view.prompt_for_ranking()
             birth_date = self.view.prompt_for_birth_date()
             gender = self.view.prompt_for_gender()
-        if not fullname_player:
-            return
-        elif not birth_date:
-            return
-        elif not gender:
-            return
-        elif not ranking:
-            return
+            if not fullname_player:
+                return
+            elif not birth_date:
+                return
+            elif not gender:
+                return
+            elif not ranking:
+                return
 
-    player = PLayer(fullname_player,birth_date,gender,ranking)
-    player_ranking = [player.fullname_player, player.ranking]
-    self.players.append(player_ranking)
+            player = Player(fullname_player,birth_date,gender,ranking)
+            player_ranking = [player.fullname_player, player.ranking]
+            self.players.append(player_ranking)
 
-    serialized_player = {'Player Full Name': player.fullname_player,
-                         'Player Birth Date': player.birthdate,
+            serialized_player = {'Player Full Name': player.fullname_player,
+                         'Player Birth Date': player.birth_date,
                          'Player Gender': player.gender,
                          'Player Ranking': player.ranking,
-                         }
+                                 }
 
-    def get_players_scores(self):
+    def sort_players_by_ranking(self):
+        """Remplit et trie une liste des joueurs avec leur classement"""
+        self.players.sort(key=lambda x: x[1]) # trie les joueurs selon leur classement
+                                        # en ordre croissant
+        return self.players #ranking_list
+
+    def matchs_list(self, players):
+        """détermine l'appariement des joueurs pour la première ronde"""
+        self.zip_list = zip(players, islice(players,
+                                     INDICE_NOMBRE_DE_JOUEURS_MOITIE, None))
+        self.matchs = list(self.zip_list)
+        return self.matchs
+
+    def get_players_scores(self, players):
         """Liste les joueurs et leur score après une ronde"""
         for player in players:
             score = self.view.prompt_for_scores(player)
@@ -71,20 +84,16 @@ class PlayersData:
                     players[index] == new_player_ranking
         return players
 
-class PlayersList:
-    """Initie la liste des joueurs selon leur classement"""
-    def get_players_and_ranking(self):
-        """Remplit et trie une liste des joueurs avec leur classement"""
-        players.sort(key=lambda x: x[1]) # trie les joueurs selon leur classement
-                                        # en ordre croissant
-        return ranking_list
+    def run(self):
+        self.get_players_data()
+        self.view.prompt_for_new_game()
+        self.sort_players_by_ranking()
+        self.view.show_players_scores(self.players)
+        self.view.show_first_round(self.matchs_list(self.players))
 
-class Round:
-    """Règle des rondes"""
-    def first_round(self):
-        """Régle d'appariement pour le premier tour - tournoi Suisse"""
-        for player1, player2 in zip(ranking_list, islice(ranking_list,
-                                                 INDICE_NOMBRE_DE_JOUEURS_MOITIE, None)):
-            print(f'les premiers matchs sont:{player1, player2}')
-
-
+        running = True
+        while running:
+            self.get_players_scores(self.players)
+            self.view.show_players_scores(self.players)
+            """mettre ici une fonction qui réapparie les joueurs en fonction de leur score"""
+            running = self.view.prompt_for_new_game()
