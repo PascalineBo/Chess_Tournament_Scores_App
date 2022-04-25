@@ -1,6 +1,6 @@
 from model import Player
-from itertools import islice
-import itertools
+from itertools import islice, cycle, permutations
+
 
 
 
@@ -31,9 +31,13 @@ class Controller:
         #models
         self.players = []
         self.matchs = []
+        self.matchs_list = []
 
         # views
         self.view = view
+
+        # numéro de la ronde
+        self.i = 1
 
     def get_players_data(self):
         while len(self.players) < NOMBRE_DE_JOUEURS:
@@ -74,11 +78,24 @@ class Controller:
         return self.matchs
 
     def matchs_list2(self, players):
-        """détermine l'appariement des joueurs pour les parties suivantes"""
-        self.zip_list = zip(islice(players, 0, None, 2),
-                          islice(players, 1, None, 2))
-        self.matchs = list(self.zip_list)
+        """détermine l'appariement des joueurs pour la partie deux"""
+        self.matchs_list = list(permutations(players, 2))
+        print(self.matchs_list)
+        self.matchs = list(islice(self.matchs_list,0,None,2**(NOMBRE_DE_JOUEURS-1)))
         return self.matchs
+
+    def matchs_listn(self, players):
+        """détermine l'appariement des joueurs pour les parties suivantes"""
+        self.matchs_list = list(permutations(players, 2))
+        """efface de la liste des permutations possibles,
+         les appariements de la première ronde"""
+        del self.matchs_list[1],
+        del self.matchs_list[NOMBRE_DE_JOUEURS]
+        print(self.matchs_list)
+        print(len(self.matchs_list))
+        self.matchs = list(islice(self.matchs_list, 1, None, NOMBRE_DE_JOUEURS))
+        return self.matchs
+
 
     def get_players_scores(self, players):
         """Liste les joueurs et leur score après une ronde"""
@@ -95,16 +112,21 @@ class Controller:
 
     def run(self):
         self.get_players_data()
-        self.view.prompt_for_new_game()
         self.sort_players_by_ranking()
         self.view.show_players_scores(self.players)
         self.view.show_round(self.matchs_list1(self.players))
+        self.get_players_scores(self.players)
+        self.sort_players_by_ranking()
+        self.view.show_players_scores(self.players)
+        self.view.show_round(self.matchs_list2(self.players))
 
         running = True
+
         while running:
             self.get_players_scores(self.players)
+            self.sort_players_by_ranking()
             self.view.show_players_scores(self.players)
-            self.view.show_round(self.matchs_list2(self.players)
-                                 )
-
+            """self.view.show_round(self.matchs_listn(self.players))"""
+            self.view.show_round(self.matchs_listn(self.players))
             running = self.view.prompt_for_new_game()
+
