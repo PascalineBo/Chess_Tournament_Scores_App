@@ -8,5 +8,4 @@ def main():
     game = Controller(view)
     game.run()
 
-
 main()

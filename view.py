@@ -1,9 +1,9 @@
-from controller import Controller
+"""from controller import Controller"""
 
 
-NOMBRE_DE_JOUEURS = 4
+NOMBRE_DE_JOUEURS = 6
 INDICE_NOMBRE_DE_JOUEURS_MOITIE = NOMBRE_DE_JOUEURS // 2
-NOMBRE_DE_RONDES = 4
+ROUNDS_NUMBER = 4
 
 class View:
     def prompt_for_tournament_name(self):
@@ -68,24 +68,38 @@ class View:
 
     def prompt_for_scores(self,player):
         """Demande les scores des joueurs"""
-        print("score de " + player[0] +"(marquez les décimaux avec un point):")
-        score = float(input())
-        return score
+        try:
+            print("score de " + player[0] +"(marquez les décimaux avec un point):")
+            score = float(input())
+            return score
+        except ValueError:
+            print("Ooups! ce n'est pas un nombre entier valide. Veuillez réessayer...")
+            score = int(input("Veuillez ressaisir le score: "))
+            return score
+        except not score:
+            return None
+        except not score > 0:
+            print ("saisissez un nombre entier positif")
+            score = int(input("Veuillez ressaisir le score: "))
+            return score
 
     def prompt_for_new_game(self):
         print("Ronde n°")
         round_number = input("(saisir un entier supérieur à 0):  ")
-        if int(round_number) > NOMBRE_DE_RONDES:
+        if int(round_number) > ROUNDS_NUMBER:
             return False
         return round_number
 
-    def show_round_number(self):
-        round_number = self.prompt_for_new_game()
-        return round_number
+    def continue_game(self):
+        print("Souhaitez-vous saisir une nouvelle ronde ? ")
+        choice = input("Y/N: ")
+        if choice == "N":
+            return False
+        return True
 
     def show_round(self, matchs):
         """Appariement pour le premier tour - tournoi Suisse"""
-        round_number = self.show_round_number()
+        round_number = self.prompt_for_new_game()
         print(f'les matchs du Round {round_number} sont:{matchs}')
 
     def show_players_scores(self, players):

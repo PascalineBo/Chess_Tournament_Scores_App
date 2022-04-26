@@ -1,11 +1,6 @@
-from model import Player
-from itertools import islice, cycle, permutations
-
-
-
-
-NOMBRE_DE_JOUEURS = 4
-INDICE_NOMBRE_DE_JOUEURS_MOITIE = NOMBRE_DE_JOUEURS // 2
+from itertools import islice, permutations
+from model import Player, PossibleMatchsList
+from view import NOMBRE_DE_JOUEURS, INDICE_NOMBRE_DE_JOUEURS_MOITIE, ROUNDS_NUMBER
 
 
 class TournamentData:
@@ -37,7 +32,6 @@ class Controller:
         self.view = view
 
         # numéro de la ronde
-        self.i = 1
 
     def get_players_data(self):
         while len(self.players) < NOMBRE_DE_JOUEURS:
@@ -81,19 +75,23 @@ class Controller:
         """détermine l'appariement des joueurs pour la partie deux"""
         self.matchs_list = list(permutations(players, 2))
         print(self.matchs_list)
-        self.matchs = list(islice(self.matchs_list,0,None,2**(NOMBRE_DE_JOUEURS-1)))
+        self.matchs = list(islice(self.matchs_list,
+                                  0,None,2*NOMBRE_DE_JOUEURS))
         return self.matchs
 
-    def matchs_listn(self, players):
+    def matchs_listn(self, players, i):
         """détermine l'appariement des joueurs pour les parties suivantes"""
-        self.matchs_list = list(permutations(players, 2))
-        """efface de la liste des permutations possibles,
-         les appariements de la première ronde"""
-        del self.matchs_list[1],
-        del self.matchs_list[NOMBRE_DE_JOUEURS]
-        print(self.matchs_list)
-        print(len(self.matchs_list))
-        self.matchs = list(islice(self.matchs_list, 1, None, NOMBRE_DE_JOUEURS))
+        possible_matchs_list = PossibleMatchsList(players)
+        matchs_list = possible_matchs_list.permutations_cleaning(players)
+        print(matchs_list)
+        print(len(matchs_list))
+        """détermine les matchs de la ronde"""
+        self.matchs = list(islice(matchs_list,
+                                  ((NOMBRE_DE_JOUEURS - 1 -1 -1) +
+                                   (NOMBRE_DE_JOUEURS - 1 - 1)
+                                   + 1
+                                   + i),
+                                  None, (NOMBRE_DE_JOUEURS + 2 + i)))
         return self.matchs
 
 
@@ -119,14 +117,16 @@ class Controller:
         self.sort_players_by_ranking()
         self.view.show_players_scores(self.players)
         self.view.show_round(self.matchs_list2(self.players))
+        self.get_players_scores(self.players)
+        """running = True"""
 
-        running = True
+        """while running"""
 
-        while running:
-            self.get_players_scores(self.players)
+        for i in range(0,ROUNDS_NUMBER - 2):
             self.sort_players_by_ranking()
             self.view.show_players_scores(self.players)
             """self.view.show_round(self.matchs_listn(self.players))"""
-            self.view.show_round(self.matchs_listn(self.players))
-            running = self.view.prompt_for_new_game()
+            self.view.show_round(self.matchs_listn(self.players, i))
+            self.get_players_scores(self.players)
+            """running = self.view.continue_game()"""
 
