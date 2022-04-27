@@ -69,7 +69,7 @@ class View:
     def prompt_for_scores(self,player):
         """Demande les scores des joueurs"""
         try:
-            print("score de " + player[0] +"(marquez les décimaux avec un point):")
+            print("score de " + player.fullname_player +"(marquez les décimaux avec un point):")
             score = float(input())
             return score
         except ValueError:
@@ -99,11 +99,13 @@ class View:
 
     def show_round(self, matchs):
         """Appariement pour le premier tour - tournoi Suisse"""
-        round_number = self.prompt_for_new_game()
-        print(f'les matchs du Round {round_number} sont:{matchs}')
+        for match in matchs:
+            print('les matchs du Round {en cours} sont:'
+                  f'{match[0].fullname_player, match[1].fullname_player}')
 
     def show_players_scores(self, players):
-        print(players)
+        for player in players:
+            print({player.fullname_player:player.ranking})
 
 class Description:
     """Les remarques générales du Directeur du tournoi vont ici"""
