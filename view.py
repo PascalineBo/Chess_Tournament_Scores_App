@@ -65,22 +65,35 @@ class View:
             ranking = int(input("tapez le classement du joueur ou de la joueuse: "))
             return ranking
 
-    def prompt_for_scores(self,player):
-        """Demande les scores des joueurs"""
-        try:
-            print("score de " + player.fullname_player +" (marquez les décimaux avec un point):")
-            score = float(input())
-            return score
-        except ValueError:
-            print("Ooups! ce n'est pas un nombre entier valide. Veuillez réessayer...")
-            score = int(input("Veuillez ressaisir le score: "))
-            return score
-        except not score:
-            return None
-        except not score > 0:
-            print ("saisissez un nombre entier positif")
-            score = int(input("Veuillez ressaisir le score: "))
-            return score
+    def prompt_for_scores(self, matchs):
+        """Demande les scores des joueurs, match par match"""
+        for match in matchs:
+            try:
+                print( "Scores du match: " f'{match[0].fullname_player, match[1].fullname_player}')
+                print("score de " + match[0].fullname_player +" (marquez les décimaux avec un point):")
+                score = float(input())
+                current_ranking = match[0].ranking
+                new_ranking = current_ranking + score
+                match[0].ranking = new_ranking
+                print("score de " + match[1].fullname_player + " (marquez les décimaux avec un point):")
+                score = float(input())
+                current_ranking = match[1].ranking
+                new_ranking = current_ranking + score
+                match[1].ranking = new_ranking
+            except ValueError:
+                print("Ooups! ce n'est pas un nombre entier valide. Veuillez réessayer...")
+                print("Scores du match: " f'{match[0].fullname_player, match[1].fullname_player}')
+                print("score de " + match[0].fullname_player + " (marquez les décimaux avec un point):")
+                score = float(input())
+                current_ranking = match[0].ranking
+                new_ranking = current_ranking + score
+                match[0].ranking = new_ranking
+                print("score de " + match[1].fullname_player + " (marquez les décimaux avec un point):")
+                score = float(input())
+                current_ranking = match[1].ranking
+                new_ranking = current_ranking + score
+                match[1].ranking = new_ranking
+        return (match[0].ranking, match[1].ranking)
 
     def prompt_for_new_game(self):
         print("Ronde n°")

@@ -108,28 +108,20 @@ class Controller:
                     self.matchs.append(self.match)
             return self.matchs
 
-    def get_players_scores(self, players):
-        """Liste les joueurs et leur score après une ronde"""
-        for player in players:
-            score = self.view.prompt_for_scores(player)
-            new_ranking = player.ranking + score
-            player.ranking = new_ranking
-        return players
-
     def run(self):
         self.get_players_data()
         self.sort_players_by_ranking()
         self.view.show_players_scores(self.players)
         self.get_round_data()
         self.view.show_round(self.matchs_list(self.players, self.rondes), self.rondes)
-        self.get_players_scores(self.players)
+        self.view.prompt_for_scores(self.matchs_list(self.players, self.rondes))
         self.sort_players_by_ranking()
         self.view.show_players_scores(self.players)
 
         for i in range(0,ROUNDS_NUMBER-1):
             self.get_round_data()
             self.view.show_round(self.matchs_list(self.players, self.rondes), self.rondes)
-            self.get_players_scores(self.players)
+            self.view.prompt_for_scores(self.matchs_list(self.players, self.rondes))
             self.sort_players_by_ranking()
             self.view.show_players_scores(self.players)
 
