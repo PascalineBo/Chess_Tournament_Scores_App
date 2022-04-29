@@ -1,7 +1,6 @@
-"""from controller import Controller"""
 
 
-NOMBRE_DE_JOUEURS = 6
+NOMBRE_DE_JOUEURS = 8
 INDICE_NOMBRE_DE_JOUEURS_MOITIE = NOMBRE_DE_JOUEURS // 2
 ROUNDS_NUMBER = 4
 
@@ -69,7 +68,7 @@ class View:
     def prompt_for_scores(self,player):
         """Demande les scores des joueurs"""
         try:
-            print("score de " + player.fullname_player +"(marquez les décimaux avec un point):")
+            print("score de " + player.fullname_player +" (marquez les décimaux avec un point):")
             score = float(input())
             return score
         except ValueError:
@@ -85,23 +84,21 @@ class View:
 
     def prompt_for_new_game(self):
         print("Ronde n°")
-        round_number = input("(saisir un entier supérieur à 0):  ")
-        if int(round_number) > ROUNDS_NUMBER:
+        round_number = int(input("(saisir un entier supérieur à 0):  "))
+        if round_number > ROUNDS_NUMBER:
             return False
         return round_number
 
-    def continue_game(self):
-        print("Souhaitez-vous saisir une nouvelle ronde ? ")
-        choice = input("Y/N: ")
-        if choice == "N":
-            return False
-        return True
+    def prompt_for_round_name(self):
+        print("Nom de la ronde:")
+        round_name = input()
+        return round_name
 
-    def show_round(self, matchs):
+    def show_round(self, matchs, rondes):
         """Appariement pour le premier tour - tournoi Suisse"""
         for match in matchs:
-            print('les matchs du Round {en cours} sont:'
-                  f'{match[0].fullname_player, match[1].fullname_player}')
+            print("les matchs du Round " + str(len(rondes)) + " sont: "
+                f'{match[0].fullname_player, match[1].fullname_player}')
 
     def show_players_scores(self, players):
         for player in players:
