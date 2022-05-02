@@ -107,6 +107,11 @@ class View:
         round_name = input()
         return round_name
 
+    def prompt_for_end_time(self):
+        print("Math fini? Y/N:")
+        finished_match = input()
+        return finished_match
+
     def show_round(self, matchs, rondes):
         """Appariement pour le premier tour - tournoi Suisse"""
         for match in matchs:
@@ -117,8 +122,6 @@ class View:
         for player in players:
             print({player.fullname_player:player.ranking})
 
-class Description:
-    """Les remarques générales du Directeur du tournoi vont ici"""
     def prompt_for_notes(self):
         """Demande le nom du tournoi"""
         tournament_notes = input("Remarques du Directeur sur le tournoi : ")
