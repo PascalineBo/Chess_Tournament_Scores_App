@@ -12,38 +12,86 @@ class Controller:
         self.players = []
         self.rondes = []
         self.serialized_players = []
-        self.tournament = []
-        self.serialized_tournament = {}
+        #self.tournaments = []
+        #self.serialized_tournaments = []
         self.tournament_name = str
         self.location = str
         self.date = str
+        self.ronde = {}
 
         # views
         self.view = view
 
     def get_tournament_data_start(self):
+        """récupère les données du tournoi au début"""
         tournament_name = self.view.prompt_for_tournament_name()
         location = self.view.prompt_for_location()
         date = self.view.prompt_for_date()
-        rondes = []
+        rondes = self.rondes
         tournament_notes = str
-        tournament = Tournament(tournament_name, location, date,rondes, tournament_notes)
+        self.tournament = Tournament(tournament_name, location, date,rondes, tournament_notes)
 
-    def get_tournament_data_end(self,tournament_name, location, date, rondes):
+    def get_tournament_data_end(self):
+        """récupère les données du tournoi à la fin et les sérialise"""
         rounds_number = ROUNDS_NUMBER
         tournament_notes = self.view.prompt_for_notes()
-        tournament = Tournament(tournament_name, location, date, rondes, tournament_notes, rounds_number)
+        #tournament = Tournament(self.tournament_name, self.location, self.date, self.rondes, tournament_notes, rounds_number)
+        self.tournament.tournament_notes = tournament_notes
+        self.tournament.rondes = self.rondes
+        #self.tournaments.append(tournament)
 
-        serialized_tournament = {'Tournament Name': tournament.tournament_name,
-                             'Tournament Location': tournament.location,
-                             'Tournament Date': tournament.date,
-                             'Tournament Rondes': tournament.rondes,
-                             'Tournament Notes': tournament.tournament_notes,
-                             'Tournament Rounds Number':tournament.rounds_number
-                             }
+    def serialize_tournament(self):
+        """serialise les tournois"""
+        #tournaments = self.tournaments
+        #for tournament in tournaments:
+        serialized_tournament = {'Tournament Name': self.tournament.tournament_name,
+                                     'Tournament Location': self.tournament.location,
+                                     'Tournament Date': self.tournament.date,
+                                     'Tournament Rondes': self.serialize_rondes(),
+                                     'Tournament Notes': self.tournament.tournament_notes,
+                                     'Tournament Rounds Number': self.tournament.rounds_number
+                                     }
+        #    self.serialized_tournaments.append(serialized_tournament)
         return serialized_tournament
 
+    def serialize_tournaments_old(self):
+        """serialise les tournois"""
+        tournaments = self.tournaments
+        for tournament in tournaments:
+            serialized_tournament = {'Tournament Name': tournament.tournament_name,
+                                     'Tournament Location': tournament.location,
+                                     'Tournament Date': tournament.date,
+                                     'Tournament Rondes': tournament.rondes,
+                                     'Tournament Notes': tournament.tournament_notes,
+                                     'Tournament Rounds Number': tournament.rounds_number
+                                     }
+            self.serialized_tournaments.append(serialized_tournament)
+        return self.serialized_tournaments
+
+    def serialize_rondes(self):
+        serialized_rondes = []
+        for ronde in self.tournament.rondes:
+            serialized_ronde = {
+                'Ronde Name': self.ronde.round_name,
+                'Ronde Number': self.ronde.round_number,
+                'Ronde Start Time': self.ronde.start_date_time,
+                'Ronde List of Matchs': self.serialize_list_of_matchs(),
+                'Ronde End Time': self.ronde.end_time
+            }
+            serialized_rondes.append(serialized_ronde)
+        return serialized_rondes
+
+    def serialize_list_of_matchs(self):
+        serialized_list_of_matchs = []
+        for match in self.ronde.list_of_matchs:
+            serialized_match = {'Match': match[0].fullname_player +" vs "+
+                                match[1].fullname_player}
+            serialized_list_of_matchs.append(serialized_match)
+        return serialized_list_of_matchs
+
+
     def get_players_data(self):
+        """récupère les données des joueurs et stocke les joueurs dans une liste"""
         while len(self.players) < NOMBRE_DE_JOUEURS:
             fullname_player = self.view.prompt_for_fullname_player()
             ranking = self.view.prompt_for_ranking()
@@ -62,6 +110,7 @@ class Controller:
             self.players.append(player)
 
     def serialize_players(self):
+        """serialilse les joueurs"""
         players = self.players
         for player in players:
             serialized_player = {'Player Full Name': player.fullname_player,
@@ -79,15 +128,15 @@ class Controller:
         return self.players #ranking_list
 
     def get_round_data(self):
-        """demande le numéro de ronde"""
+        """demande les données des rondes et les stocke dans une liste"""
         round_number = int(self.view.prompt_for_new_game())
         round_name = self.view.prompt_for_round_name()
         list_of_matchs = []
         start_date_time = str(datetime.now())
         end_time = str(0)
-        ronde = Ronde(list_of_matchs, round_name, round_number,
+        self.ronde = Ronde(list_of_matchs, round_name, round_number,
                  start_date_time, end_time)
-        self.rondes.append(ronde)
+        self.rondes.append(self.ronde)
         print(self.rondes)
         return self.rondes
 
@@ -122,23 +171,30 @@ class Controller:
                     self.playerslist.pop(0)
                     self.playerslist.pop(0)
                     self.matchs.append(self.match)
+            ronde.list_of_matchs = self.matchs
             return self.matchs
 
     def get_round_end_time(self):
-        end_time = str(0)
-        while self.view.prompt_for_end_time() != 'Y':
+        end_time = self.ronde.end_time
+        while self.view.prompt_for_end_time() != 'O':
             end_time = str(datetime.now())
-        return end_time
+            self.rondes[-1].end_time = end_time
+        return self.rondes
 
-    def export_data_in_database(self,serialized_players,serialized_tournament):
+    def export_data_in_database(self,serialized_players,serialized_tournaments):
         """exporte les données dans une base de données TinyDB"""
         db = TinyDB("databases.json")
-        tournament_table = db.table("tournament")
-        tournament_table.truncate()  # clear the table first
-        tournament_table.insert_multiple(serialized_tournament)
         players_table = db.table("players")
         players_table.truncate()  # clear the table first
         players_table.insert_multiple(serialized_players)
+        tournament_table = db.table("tournament")
+        tournament_table.truncate()  # clear the table first
+        # tournament_table.insert_multiple(serialized_tournaments)
+        try:
+            print(serialized_tournaments)
+            tournament_table.insert(serialized_tournaments)
+        except ValueError:
+            print(ValueError)
         return
 
     def run(self):
@@ -149,6 +205,7 @@ class Controller:
         self.get_round_data()
         self.view.show_round(self.matchs_list(self.players, self.rondes), self.rondes)
         self.get_round_end_time()
+        self.tournament.rondes = self.rondes
         self.view.prompt_for_scores(self.matchs_list(self.players, self.rondes))
         self.sort_players_by_ranking()
         self.view.show_players_scores(self.players)
@@ -157,11 +214,17 @@ class Controller:
             self.get_round_data()
             self.view.show_round(self.matchs_list(self.players, self.rondes), self.rondes)
             self.get_round_end_time()
+            self.tournament.rondes = self.rondes
             self.view.prompt_for_scores(self.matchs_list(self.players, self.rondes))
             self.sort_players_by_ranking()
             self.view.show_players_scores(self.players)
 
+        self.get_tournament_data_end()
+        print(self.rondes)
+        print(self.tournament)
         self.serialize_players()
-        self.get_tournament_data_end(self.tournament_name, self.location, self.date, self.rondes)
-        self.export_data_in_database(self.serialized_players,self.serialized_tournament)
+        print(self.serialized_players)
+        #self.export_data_in_database(self.serialized_players,self.serialized_tournaments)
+        self.export_data_in_database(self.serialized_players, self.serialize_tournament())
+        print(self.serialize_tournament())
 
