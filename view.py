@@ -4,10 +4,10 @@ NOMBRE_DE_JOUEURS = 8
 INDICE_NOMBRE_DE_JOUEURS_MOITIE = NOMBRE_DE_JOUEURS // 2
 ROUNDS_NUMBER = 4
 
+
 class View:
     def prompt_for_tournament_name(self):
         """demande le nom du tournoi"""
-        #name_tournament = "montournoi"
         name_tournament = input("tapez le nom du tournoi : ")
         if not name_tournament:
             return None
@@ -15,31 +15,29 @@ class View:
 
     def prompt_for_location(self):
         """demande le lieu du tournoi"""
-        #location = "lieu du tournoi"
         location = input("tapez le lieu du tournoi : ")
         if not location:
             return None
         return location
 
     def prompt_for_date(self):
-        """demande la date du tournoi - A VERIFIER"""
-        #date = "22/01/12"
-        date = input("tapez la date du tournoi en format jj/mm/aa : ")
+        """demande la date du tournoi"""
+        date = input("tapez la date du tournoi en format "
+                     "jj/mm/aa : ")
         if not date:
             return None
         return date
 
     def prompt_for_fullname_player(self):
         """demande les nom et prénom du joueur ou de la joueuse"""
-        #fullname_player = "joueur"
-        fullname_player = input("tapez les NOM et prénom du joueur ou de la joueuse : ")
+        fullname_player = input("tapez les NOM et prénom du "
+                                "joueur ou de la joueuse : ")
         if not fullname_player:
             return None
         return fullname_player
 
     def prompt_for_birth_date(self):
         """demande la date de naissance du joueur ou de la joueuse"""
-        #birth_date = "23/23/23"
         birth_date = input("tapez la date de naissance du joueur ou "
                            "de la joueuse en format JJ/MM/AA: ")
         if not birth_date:
@@ -48,9 +46,8 @@ class View:
 
     def prompt_for_gender(self):
         """demande le genre du joueur ou de la joueuse"""
-        #gender = "M"
         gender = input("tapez le genre du joueur ou "
-                           " de la joueuse en format M/F/NB: ")
+                       " de la joueuse en format M/F/NB: ")
         if not gender:
             return None
         return gender
@@ -58,50 +55,54 @@ class View:
     def prompt_for_ranking(self):
         """demande le classement du joueur ou de la joueuse"""
         try:
-            #ranking = 1
-            ranking = int(input("tapez le classement du joueur ou de la joueuse: "))
+            ranking = int(input("tapez le classement du joueur "
+                                "ou de la joueuse: "))
             return ranking
         except ValueError:
-            print("Ooups! ce n'est pas un nombre entier valide. Veuillez réessayer...")
-            #ranking = 1
-            ranking = int(input("tapez le classement du joueur ou de la joueuse: "))
+            print("Ooups! ce n'est pas un nombre entier valide."
+                  " Veuillez réessayer...")
+            ranking = int(input("tapez le classement du joueur "
+                                "ou de la joueuse: "))
             return ranking
         except not ranking:
             return None
         except not ranking > 0:
-            print ("saisissez un nombre entier positif")
-            #ranking = 1
-            ranking = int(input("tapez le classement du joueur ou de la joueuse: "))
+            print("saisissez un nombre entier positif")
+            ranking = int(input("tapez le classement du joueur "
+                                "ou de la joueuse: "))
             return ranking
 
     def prompt_for_scores(self, matchs):
         """Demande les scores des joueurs, match par match"""
         for match in matchs:
             try:
-                print( "Scores du match: " f'{match[0].fullname_player, match[1].fullname_player}')
-                print("score de " + match[0].fullname_player +" (marquez les décimaux avec un point):")
-                #score = 1
+                print("Scores du match: "
+                      f'{match[0].fullname_player, match[1].fullname_player}')
+                print("score de " + match[0].fullname_player +
+                      " (marquez les décimaux avec un point):")
                 score = float(input())
                 current_ranking = match[0].ranking
                 new_ranking = current_ranking + score
                 match[0].ranking = new_ranking
-                print("score de " + match[1].fullname_player + " (marquez les décimaux avec un point):")
-                #score = 1
+                print("score de " + match[1].fullname_player +
+                      " (marquez les décimaux avec un point):")
                 score = float(input())
                 current_ranking = match[1].ranking
                 new_ranking = current_ranking + score
                 match[1].ranking = new_ranking
             except ValueError:
-                print("Ooups! ce n'est pas un nombre entier valide. Veuillez réessayer...")
-                print("Scores du match: " f'{match[0].fullname_player, match[1].fullname_player}')
-                print("score de " + match[0].fullname_player + " (marquez les décimaux avec un point):")
-                #score = 1
+                print("Ooups! ce n'est pas un nombre entier valide. "
+                      "Veuillez réessayer...")
+                print("Scores du match: "
+                      f'{match[0].fullname_player, match[1].fullname_player}')
+                print("score de " + match[0].fullname_player +
+                      " (marquez les décimaux avec un point):")
                 score = float(input())
                 current_ranking = match[0].ranking
                 new_ranking = current_ranking + score
                 match[0].ranking = new_ranking
-                print("score de " + match[1].fullname_player + " (marquez les décimaux avec un point):")
-                #score = 1
+                print("score de " + match[1].fullname_player +
+                      " (marquez les décimaux avec un point):")
                 score = float(input())
                 current_ranking = match[1].ranking
                 new_ranking = current_ranking + score
@@ -111,12 +112,12 @@ class View:
     def prompt_for_new_game(self):
         try:
             print("Ronde n°")
-            # round_number = 1
             round_number = int(input("(saisir un entier supérieur à 0):  "))
             if round_number > ROUNDS_NUMBER:
                 return False
         except ValueError:
-            print("Ooups! ce n'est pas un nombre entier valide. Veuillez réessayer...")
+            print("Ooups! ce n'est pas un nombre entier valide. "
+                  "Veuillez réessayer...")
             print("Ronde n°")
             round_number = int(input("(saisir un entier supérieur à 0):  "))
             if round_number > ROUNDS_NUMBER:
@@ -125,13 +126,11 @@ class View:
 
     def prompt_for_round_name(self):
         print("Nom de la ronde:")
-        #round_name = "aa"
         round_name = input()
         return round_name
 
     def prompt_for_end_time(self):
         print("Math fini? O/N:")
-        #finished_match = "O"
         finished_match = input()
         return finished_match
 
@@ -139,19 +138,15 @@ class View:
         """Appariement pour le premier tour - tournoi Suisse"""
         for match in matchs:
             print("les matchs du Round " + str(len(rondes)) + " sont: "
-                f'{match[0].fullname_player, match[1].fullname_player}')
+                  f'{match[0].fullname_player, match[1].fullname_player}')
 
     def show_players_scores(self, players):
         for player in players:
-            print({player.fullname_player:player.ranking})
+            print({player.fullname_player: player.ranking})
 
     def prompt_for_notes(self):
         """Demande le nom du tournoi"""
-        #tournament_notes = "zadzadzad"
         tournament_notes = input("Remarques du Directeur sur le tournoi : ")
         if not tournament_notes:
             return None
         return tournament_notes
-
-
-
