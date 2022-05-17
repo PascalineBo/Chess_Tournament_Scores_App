@@ -6,6 +6,7 @@ from view import NOMBRE_DE_JOUEURS, INDICE_NOMBRE_DE_JOUEURS_MOITIE, \
 from tinydb import TinyDB
 from tinydb import where
 from tinydb import Query
+import json
 
 
 class Controller:
@@ -149,7 +150,7 @@ class Controller:
                 fullname_player = dic_player['Player Full Name']
                 birth_date = dic_player['Player Birth Date']
                 gender = dic_player['Player Gender']
-                ranking = dic_player['Player Ranking']
+                ranking = float(dic_player['Player Ranking'])
                 player = Player(fullname_player, birth_date, gender, ranking)
                 print(player)
                 self.players.append(player)
@@ -265,6 +266,33 @@ class Controller:
             ({'Tournament Notes': tournament.tournament_notes},
             where('Tournament Name') == tournament.tournament_name)])
 
+    def search_tournament_data_in_db(self):
+        db = TinyDB("databases.json")
+        self.tournament_table = db.table("tournament")
+        dbObject = open("databases.json","r")
+        read_database = dbObject.read()
+        print(read_database)
+        """deserialized_tournament = self.tournament_table.get(doc_id=1)
+        print(deserialized_tournament)"""
+        dic_database = json.loads(read_database)
+        dic_tournament = dic_database['tournament']
+        dic_tournament_1 = dic_tournament['1']
+        tournament_name = dic_tournament_1['Tournament Name']
+        """raw_item = str(deserialized_tournament)
+        item = raw_item[1:-1]
+        item = item.replace("'", "")
+        print(item)
+        print(raw_item)
+        dic_tournament = dict(raw_item)"""
+        """dic_tournament = {key: val for key, val in (string_item.split(': ')
+                                                    for string_item in item.split(', '))}"""
+        location = dic_tournament_1['Tournament Location']
+        date = dic_tournament_1['Tournament Date']
+        rondes = []
+        tournament_notes = ""
+        self.tournament = Tournament(tournament_name, location,
+                                     date, rondes, tournament_notes)
+
     def complete_run(self):
         self.get_tournament_data_start()  # demande les données
         # de début du tournoi
@@ -279,7 +307,6 @@ class Controller:
         self.partial_run()
 
     def partial_run(self):
-        self.deserialize_tournament()
         self.get_round_data()  # récupère les données de début de la ronde
         self.view.show_round(self.matchs_list(self.players, self.rondes),
                              self.rondes)
@@ -331,4 +358,6 @@ class Controller:
         if len(self.players) == 0:
             self.complete_run()
         else:
+            self.search_tournament_data_in_db()  # récupère les données du tournoi
+                                                 # dans la database
             self.partial_run()
