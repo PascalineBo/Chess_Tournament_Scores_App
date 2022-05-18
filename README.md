@@ -12,11 +12,17 @@ Le Code est organisé selon le modèle "Model View Controller", en langage Pytho
 (ii) Télécharger les fichiers main.py, model.py, view.py, controller.py
 
 (iii) ouvrez le fichier main.py et faites le tourner
+
 (iv) saisissez les données demandées dans le terminal: informations demandées pour un tournoi, 8 joueurs et 4 tours; les tours s'appellent "Round 1", "Round 2", etc...
 
 Les joueurs sont appariés selon les règles du tournoi suisse: 
 https://fr.wikipedia.org/wiki/Syst%C3%A8me_suisse#:~:text=Le%20principe%20du%20tournoi%20suisse,leur%20Classement%20Elo%20aux%20%C3%A9checs.
 
+(v) vous pouvez consulter le rapport du tournoi dans le fichier créé 'databases.json'
+
+(vi) si vous interrompez le programme après avoir saisi les données des joueurs, quand vous le relancerez, il ne vous demandera pas de ressaisie mais ira chercher les données dans le fichier 'databases.json'
+
+Pep8:
 Si vous voulez vérifier que le code respecte les règles de la Pep8, tapez dans le terminal, 
 en vous positionnant dans le dossier où vous avez rangé main.py, model.py, view.py, controller.py:
 
