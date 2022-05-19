@@ -134,10 +134,10 @@ class View:
         finished_match = input()
         return finished_match
 
-    def show_round(self, matchs, rondes):
+    def show_round(self, matchs, round_number):
         """Appariement pour le premier tour - tournoi Suisse"""
         for match in matchs:
-            print("les matchs du Round " + str(len(rondes)) + " sont: "
+            print("les matchs du Round " + str(round_number) + " sont: "
                   f'{match[0].fullname_player, match[1].fullname_player}')
 
     def show_players_scores(self, players):
