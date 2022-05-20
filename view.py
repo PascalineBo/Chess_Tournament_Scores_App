@@ -72,42 +72,10 @@ class View:
                                 "ou de la joueuse: "))
             return ranking
 
-    def prompt_for_scores(self, matchs):
-        """Demande les scores des joueurs, match par match"""
-        for match in matchs:
-            try:
-                print("Scores du match: "
-                      f'{match[0].fullname_player, match[1].fullname_player}')
-                print("score de " + match[0].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[0].ranking
-                new_ranking = current_ranking + score
-                match[0].ranking = new_ranking
-                print("score de " + match[1].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[1].ranking
-                new_ranking = current_ranking + score
-                match[1].ranking = new_ranking
-            except ValueError:
-                print("Ooups! ce n'est pas un nombre entier valide. "
-                      "Veuillez réessayer...")
-                print("Scores du match: "
-                      f'{match[0].fullname_player, match[1].fullname_player}')
-                print("score de " + match[0].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[0].ranking
-                new_ranking = current_ranking + score
-                match[0].ranking = new_ranking
-                print("score de " + match[1].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[1].ranking
-                new_ranking = current_ranking + score
-                match[1].ranking = new_ranking
-        return (match[0].ranking, match[1].ranking)
+    def prompt_for_score(self):
+        """Demande le score d'un joueur"""
+        score = float(input())
+        return score
 
     def prompt_for_new_game(self):
         try:
