@@ -170,9 +170,11 @@ class Controller:
             round_number = 1
         else:
             round_number = len(self.deserialized_tournament[
-                                        self.tournament_count -1]['Tournament_Rondes']) + 1
+                                        self.tournament_count -1][
+                                   'Tournament_Rondes']) + 1
         print(len(self.deserialized_tournament[
-                                        self.tournament_count -1]['Tournament_Rondes']))
+                                        self.tournament_count -1][
+                      'Tournament_Rondes']))
         round_name = "Round " + str(round_number)
         print(round_name)
         list_of_matchs = []
@@ -294,6 +296,7 @@ class Controller:
                                      date, rondes, tournament_notes)
 
     def complete_run(self):
+        """run complet: demande toutes les données depuis le début"""
         self.get_tournament_data()  # demande les données
         # de début du tournoi
         self.get_players_data()  # demande les données
@@ -307,10 +310,12 @@ class Controller:
         self.partial_run()
 
     def partial_run(self):
+        """run actualisé: ne redemande pas les données de joueurs
+        ni du début du tournoi"""
         self.get_round_data()  # récupère les données de début de la ronde
         self.view.show_round(self.matchs_list(self.players, self.rondes),
-                             len(self.rondes))
-        # détermine et affiche les matchs de la ronde
+                             self.rondes[-1].round_number)
+        # détermine et affiche les matchs de la ronde en cours
         self.rondes[-1].list_of_matchs = self.matchs  # enregistre
         # les matchs dans l'objet Ronde de la ronde en cours,
         # dans la liste des rondes
@@ -336,11 +341,13 @@ class Controller:
         print(self.tournament_count)
         current_round_number = len(self.deserialized_tournament[
                    self.tournament_count - 1]['Tournament_Rondes'])
+        # regarde dans la base de données à quel numéro de ronde
+        # on est rendu
         for i in range(0, ROUNDS_NUMBER - current_round_number):
             self.get_round_data()
             self.view.show_round(self.matchs_list(self.players,
                                                   self.rondes),
-                                 len(self.rondes))
+                                 self.rondes[-1].round_number)
             self.rondes[-1].list_of_matchs = self.matchs_list(self.players,
                                                               self.rondes)
             self.get_round_end_time()
@@ -361,17 +368,29 @@ class Controller:
         # tournoi dans la base de données
 
     def run(self):
-        self.deserialize_players()  # récupère les données des joueurs
-        # dans la base de données
-        db = TinyDB("databases.json")
-        self.tournament_table = db.table("tournament")
-        self.deserialized_tournament = self.tournament_table.all()
-        if len(self.players) == 0:
-            self.complete_run()
-        elif len(self.deserialized_tournament[
-                       len(self.deserialized_tournament) - 1]['Tournament_Notes']) != 0:
-            self.complete_run()
+        if self.view.prompt_for_report() == 'O':
+            # demande si on veut un rapport
+            db = TinyDB("databases.json")
+            players_table = db.table("Players")
+            tournament_table = db.table("tournament")
+            print("Les données des tournois sont:")
+            print(tournament_table.all())
+            print("Les données des joueurs sont:")
+            print(players_table.all())
         else:
-            self.search_tournament_data_in_db()  # récupère
-            # les données du tournoi dans la base de données
-            self.partial_run()
+            # lance l'appli
+            self.deserialize_players()  # récupère les données des joueurs
+            # dans la base de données
+            db = TinyDB("databases.json")
+            self.tournament_table = db.table("tournament")
+            self.deserialized_tournament = self.tournament_table.all()
+            # récupère les données des tournois dans la base de données
+            if len(self.players) == 0:
+                self.complete_run()
+            elif len(self.deserialized_tournament[
+                           len(self.deserialized_tournament) - 1]['Tournament_Notes']) != 0:
+                self.complete_run()
+            else:
+                self.search_tournament_data_in_db()  # récupère
+                # les données du tournoi dans la base de données
+                self.partial_run()

@@ -134,6 +134,11 @@ class View:
         finished_match = input()
         return finished_match
 
+    def prompt_for_report(self):
+        print("Voulez-vous imprimer un rapport? O/N:")
+        report_request = input()
+        return report_request
+
     def show_round(self, matchs, round_number):
         """Appariement pour le premier tour - tournoi Suisse"""
         for match in matchs:
@@ -141,6 +146,7 @@ class View:
                   f'{match[0].fullname_player, match[1].fullname_player}')
 
     def show_players_scores(self, players):
+        """affiche le score des joueurs"""
         for player in players:
             print({player.fullname_player: player.ranking})
 
