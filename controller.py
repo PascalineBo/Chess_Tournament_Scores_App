@@ -74,7 +74,8 @@ class Controller:
     def serialize_rondes(self):
         """sérialise les rondes"""
         try:
-            serialized_rondes = self.deserialized_tournament[self.tournament_count - 1]['Tournament_Rondes']
+            serialized_rondes = self.deserialized_tournament[
+                self.tournament_count - 1]['Tournament_Rondes']
         except IndexError:
             serialized_rondes = []
         try:
@@ -151,8 +152,14 @@ class Controller:
         # données
 
     def sort_players_by_ranking(self):
-        """Remplit et trie une liste des joueurs avec leur classement"""
+        """Trie une liste des joueurs avec leur classement"""
         self.players.sort(key=lambda x: x.ranking)
+        # trie les joueurs selon leur classement en ordre croissant
+        return self.players  # ranking_list
+
+    def sort_players_by_alpha(self):
+        """Remplit et trie une liste des joueurs avec leur classement"""
+        self.players.sort(key=lambda x: x.fullname_player)
         # trie les joueurs selon leur classement en ordre croissant
         return self.players  # ranking_list
 
@@ -168,10 +175,10 @@ class Controller:
             round_number = 1
         else:
             round_number = len(self.deserialized_tournament[
-                                        self.tournament_count -1][
+                                        self.tournament_count - 1][
                                    'Tournament_Rondes']) + 1
         print(len(self.deserialized_tournament[
-                                        self.tournament_count -1][
+                                        self.tournament_count - 1][
                       'Tournament_Rondes']))
         round_name = "Round " + str(round_number)
         print(round_name)
@@ -179,7 +186,7 @@ class Controller:
         start_date_time = str(datetime.now())
         end_time = str(0)
         self.ronde = Ronde(list_of_matchs, round_name, round_number,
-                      start_date_time, end_time)
+                           start_date_time, end_time)
         self.rondes.append(self.ronde)
         print(self.rondes)
         return self.rondes
@@ -229,7 +236,8 @@ class Controller:
         return self.matchs
 
     def get_scores(self, matchs):
-        """récupère les scores des joueurs après une partie et les sauvegarde"""
+        """récupère les scores des joueurs après une partie
+        et les sauvegarde"""
         for match in matchs:
             try:
                 print("Scores du match: "
@@ -322,9 +330,12 @@ class Controller:
         self.tournament_table = db.table("tournament")
         self.deserialized_tournament = self.tournament_table.all()
         tournaments_number = len(self.deserialized_tournament)
-        tournament_name = self.deserialized_tournament[tournaments_number - 1]['Tournament_Name']
-        location = self.deserialized_tournament[tournaments_number - 1]['Tournament_Location']
-        date = self.deserialized_tournament[tournaments_number - 1]['Tournament_Date']
+        tournament_name = self.deserialized_tournament[tournaments_number - 1][
+            'Tournament_Name']
+        location = self.deserialized_tournament[tournaments_number - 1][
+            'Tournament_Location']
+        date = self.deserialized_tournament[tournaments_number - 1][
+            'Tournament_Date']
         rondes = []
         tournament_notes = ""
         self.tournament = Tournament(tournament_name, location,
@@ -361,7 +372,7 @@ class Controller:
         self.save_rondes(self.tournament)
         # sauvegarde les données des rondes
         self.get_scores(self.matchs_list
-                                    (self.players, self.rondes))
+                        (self.players, self.rondes))
         # demande la saisie des scores de la ronde pour chaque joueur
         self.sort_players_by_ranking()  # trie les joueurs
         # selon leur nouveau classement
@@ -388,7 +399,7 @@ class Controller:
             self.get_round_end_time()
             self.tournament.rondes = self.rondes
             self.get_scores(self.matchs_list(self.players,
-                                                         self.rondes))
+                                             self.rondes))
             self.sort_players_by_ranking()
             self.save_players_ranking(self.players)  # actualise le classement
             # des joueurs dans la base de données
@@ -410,10 +421,9 @@ class Controller:
         tournament_table = db.table("tournament")
         # appelle les données de la table tournois
         print("Les données des tournois sont:")
-        tournaments = tournament_table.all()
         deserialized_tournament = tournament_table.all()
         tournaments_number = len(deserialized_tournament)
-        for i in range(1, tournaments_number + 1): # présente les données
+        for i in range(1, tournaments_number + 1):  # présente les données
             # des tournois de la base
             tournament_name = \
                 deserialized_tournament[i - 1]['Tournament_Name']
@@ -440,6 +450,10 @@ class Controller:
         print("Le classement des joueurs est:")
         self.view.show_players_scores(self.players)
         # affiche les joueurs dans l'ordre de leur classement
+        print("Classement des joueurs par ordre alphabétique: ")
+        self.sort_players_by_alpha()
+        self.view.show_players_scores(self.players)
+        # affiche les joueurs par ordre alphabétique
         print("Les données des joueurs sont:")
         players = players_table.all()
         for player in players:
@@ -456,7 +470,8 @@ class Controller:
         if len(self.players) == 0:
             self.complete_run()
         elif len(self.deserialized_tournament[
-                     len(self.deserialized_tournament) - 1]['Tournament_Notes']) != 0:
+                     len(self.deserialized_tournament) - 1][
+                     'Tournament_Notes']) != 0:
             self.complete_run()
         else:
             self.search_tournament_data_in_db()  # récupère
@@ -471,4 +486,3 @@ class Controller:
         else:
             # lance l'appli
             self.run()
-
