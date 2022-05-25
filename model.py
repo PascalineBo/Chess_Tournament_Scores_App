@@ -5,12 +5,13 @@ class Tournament:
     """Stocke les données du tournoi du jour"""
 
     def __init__(self, tournament_name, location, date, rondes,
-                 tournament_notes, rounds_number=ROUNDS_NUMBER):
+                 tournament_notes, players, rounds_number=ROUNDS_NUMBER):
         self.tournament_name = tournament_name
         self.location = location
         self.date = date
         self.rondes = rondes
         self.tournament_notes = tournament_notes
+        self.players = players
         self.rounds_number = rounds_number
 
 
@@ -34,12 +35,3 @@ class Ronde:
         self.start_date_time = start_date_time
         self.list_of_matchs = list_of_matchs
         self.end_time = end_time
-
-
-class TimeControl:
-    """qu'est-ce que c'est?"""
-    pass
-
-
-class Match:
-    pass
