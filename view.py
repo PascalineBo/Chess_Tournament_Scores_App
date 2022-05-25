@@ -31,7 +31,8 @@ class View:
     def prompt_for_fullname_player(self):
         """demande les nom et prénom du joueur ou de la joueuse"""
         fullname_player = input("tapez les NOM et prénom du "
-                                "joueur ou de la joueuse : ")
+                                "joueur ou de la joueuse (sans accent)"
+                                ": ")
         if not fullname_player:
             return None
         return fullname_player
@@ -72,42 +73,10 @@ class View:
                                 "ou de la joueuse: "))
             return ranking
 
-    def prompt_for_scores(self, matchs):
-        """Demande les scores des joueurs, match par match"""
-        for match in matchs:
-            try:
-                print("Scores du match: "
-                      f'{match[0].fullname_player, match[1].fullname_player}')
-                print("score de " + match[0].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[0].ranking
-                new_ranking = current_ranking + score
-                match[0].ranking = new_ranking
-                print("score de " + match[1].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[1].ranking
-                new_ranking = current_ranking + score
-                match[1].ranking = new_ranking
-            except ValueError:
-                print("Ooups! ce n'est pas un nombre entier valide. "
-                      "Veuillez réessayer...")
-                print("Scores du match: "
-                      f'{match[0].fullname_player, match[1].fullname_player}')
-                print("score de " + match[0].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[0].ranking
-                new_ranking = current_ranking + score
-                match[0].ranking = new_ranking
-                print("score de " + match[1].fullname_player +
-                      " (marquez les décimaux avec un point):")
-                score = float(input())
-                current_ranking = match[1].ranking
-                new_ranking = current_ranking + score
-                match[1].ranking = new_ranking
-        return (match[0].ranking, match[1].ranking)
+    def prompt_for_score(self):
+        """Demande le score d'un joueur"""
+        score = float(input())
+        return score
 
     def prompt_for_new_game(self):
         try:
@@ -134,13 +103,19 @@ class View:
         finished_match = input()
         return finished_match
 
-    def show_round(self, matchs, rondes):
+    def prompt_for_report(self):
+        print("Voulez-vous imprimer un rapport? O/N:")
+        report_request = input()
+        return report_request
+
+    def show_round(self, matchs, round_number):
         """Appariement pour le premier tour - tournoi Suisse"""
         for match in matchs:
-            print("les matchs du Round " + str(len(rondes)) + " sont: "
+            print("les matchs du Round " + str(round_number) + " sont: "
                   f'{match[0].fullname_player, match[1].fullname_player}')
 
     def show_players_scores(self, players):
+        """affiche le score des joueurs"""
         for player in players:
             print({player.fullname_player: player.ranking})
 
