@@ -175,7 +175,6 @@ class Controller:
         self.tournament_table = db.table("tournament")
         self.deserialized_tournament = self.tournament_table.all()
         self.tournament_count = len(self.deserialized_tournament)
-        print(self.tournament_count)
         if len(self.deserialized_tournament[
                    self.tournament_count - 1]['Tournament_Rondes']) == 0:
             round_number = 1
@@ -183,9 +182,6 @@ class Controller:
             round_number = len(self.deserialized_tournament[
                                         self.tournament_count - 1][
                                    'Tournament_Rondes']) + 1
-        print(len(self.deserialized_tournament[
-                                        self.tournament_count - 1][
-                      'Tournament_Rondes']))
         round_name = "Round " + str(round_number)
         print(round_name)
         list_of_matchs = []
@@ -194,7 +190,6 @@ class Controller:
         self.ronde = Ronde(list_of_matchs, round_name, round_number,
                            start_date_time, end_time)
         self.rondes.append(self.ronde)
-        print(self.rondes)
         return self.rondes
 
     def matchs_list(self, players, rondes):
@@ -203,7 +198,6 @@ class Controller:
         matchs_round_number = 1
         for ronde in rondes:
             matchs_round_number = int(ronde.round_number)
-            print(matchs_round_number)
         if matchs_round_number == 1:  # rule for the first round
             self.zip_list = zip(players,
                                 islice(players,
@@ -300,8 +294,6 @@ class Controller:
         """exporte les données du tournoi dans une base de données TinyDB"""
         self.db = TinyDB("databases.json")
         tournament_table = self.db.table("tournament")
-        """tournament_table.truncate()  # clear the table first"""
-        print(serialized_tournament)
         tournament_table.insert(serialized_tournament)
 
     def save_players_ranking(self, players):
@@ -399,7 +391,6 @@ class Controller:
         self.tournament_table = db.table("tournament")
         self.deserialized_tournament = self.tournament_table.all()
         self.tournament_count = len(self.deserialized_tournament)
-        print(self.tournament_count)
         current_round_number = len(self.deserialized_tournament[
                    self.tournament_count - 1]['Tournament_Rondes'])
         # regarde dans la base de données à quel numéro de ronde
