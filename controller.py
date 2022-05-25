@@ -456,14 +456,15 @@ class Controller:
             print("Nombre de tours: " + str(tournament_rounds_number))
         self.deserialize_players()  # retransforme les joueurs en
         # objet Player
-        print("Le classement des joueurs est:")
+        print("Le classement des joueurs en cours est:")
         self.view.show_players_scores(self.players)
         # affiche les joueurs dans l'ordre de leur classement
-        print("Classement des joueurs par ordre alphabétique: ")
+        print("Classement des joueurs en cours par ordre "
+              "alphabétique: ")
         self.sort_players_by_alpha()
         self.view.show_players_scores(self.players)
         # affiche les joueurs par ordre alphabétique
-        print("Les données des joueurs sont:")
+        print("Les données des joueurs en cours sont:")
         players = players_table.all()
         for player in players:
             print(player)
