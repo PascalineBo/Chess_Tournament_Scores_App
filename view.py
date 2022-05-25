@@ -31,7 +31,8 @@ class View:
     def prompt_for_fullname_player(self):
         """demande les nom et prénom du joueur ou de la joueuse"""
         fullname_player = input("tapez les NOM et prénom du "
-                                "joueur ou de la joueuse : ")
+                                "joueur ou de la joueuse (sans accent)"
+                                ": ")
         if not fullname_player:
             return None
         return fullname_player
