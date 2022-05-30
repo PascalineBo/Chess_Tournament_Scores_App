@@ -204,7 +204,6 @@ class Controller:
                                        INDICE_NOMBRE_DE_JOUEURS_MOITIE,
                                        None))
             self.matchs = list(self.zip_list)
-            print(self.matchs)
             return self.matchs
         elif matchs_round_number > 1:
             self.matchs = []
