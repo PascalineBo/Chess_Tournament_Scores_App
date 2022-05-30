@@ -7,11 +7,18 @@ Le Code est organisé selon le modèle "Model View Controller", en langage Pytho
 - de Python3: https://www.python.org/downloads/
 
 - du package de gestion simple de base de données "tiny DB": tapez dans le terminal:
+
  pip install tinydb
+ 
+ autrement dit, les Requirements sont, en plus de Python3:
+ 
+ tinydb==4.7.0
+ flake8==4.0.1
+ flake8-html==0.4.2
 
 (ii) Télécharger les fichiers main.py, model.py, view.py, controller.py
 
-(iii) ouvrez le fichier main.py et faites le tourner
+(iii) ouvrez le fichier main.py et faites le tourner: commande: $ python3 main.py
 
 (iv) saisissez les données demandées dans le terminal: (a) le programme commence par vous demander si vous souhaitez un rapport; si oui, tapez "O", si non, pour saisir le tournoi, tapez "N", puis les informations demandées pour un tournoi, 8 joueurs et 4 tours; les tours s'appellent "Round 1", "Round 2", etc...
 
@@ -34,7 +41,11 @@ Si vous voulez vérifier que le code respecte les règles de la Pep8, tapez dans
 pip install flake8-html
 
 puis:
+configurer:
 
+flake8 --max-line-length 119
+
+et lancer:
 flake8 --format=html --htmldir=flake-report
 
 Vous aurez alors un dossier flake-report où vous aurez le rapport d'erreurs éventuelles du code concernant le non-respect de la Pep8.
