@@ -51,22 +51,24 @@ et ne la redemandera pas quand vous le relancerez.
  </li>
 <li> vous pouvez stocker les données de plusieurs tournois dans le fichier 'databases.json'. </li>
 
-Pep8:
+<li> Pep8:
 Si vous voulez vérifier que le code respecte les règles de la Pep8, tapez dans le terminal, 
 (en vous positionnant dans le dossier où vous avez rangé main.py, model.py, view.py, controller.py):
 
-pip install flake8-html
+`pipenv install flake8-html`
 
 puis:
 configurer:
 
-flake8 --max-line-length 119
+`flake8 --max-line-length 119`
 
 et lancer:
-flake8 --format=html --htmldir=flake-report
+ 
+`flake8 --format=html --htmldir=flake-report`
 
 Vous aurez alors un dossier flake-report où vous aurez le rapport d'erreurs éventuelles du code concernant le non-respect de la Pep8.
-
+ </li>
+ </ol>
 Ci-joint les spécifications techniques demandées pour ce code:
 
 [Centre échecs - spécification technique (11).docx](https://github.com/MargueriteEffren/OC_Projet4/files/8660324/Centre.echecs.-.specification.technique.11.docx)
