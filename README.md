@@ -69,6 +69,8 @@ et lancer:
 Vous aurez alors un dossier flake-report où vous aurez le rapport d'erreurs éventuelles du code concernant le non-respect de la Pep8.
  </li>
  </ol>
+ 
+## Specs
 Ci-joint les spécifications techniques demandées pour ce code:
 
 [Centre échecs - spécification technique (11).docx](https://github.com/MargueriteEffren/OC_Projet4/files/8660324/Centre.echecs.-.specification.technique.11.docx)
