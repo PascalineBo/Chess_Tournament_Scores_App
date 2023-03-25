@@ -30,7 +30,7 @@ Le Code est organisé selon le modèle "Model View Controller", en langage **[Py
 <ol>
 
 <li> avec votre terminal, positionnez vous dans le dossier dans lequel vous avez installé l'Appli</li>
-<li>
+<li> tapez la commande:
  
  `python main.py`
  
