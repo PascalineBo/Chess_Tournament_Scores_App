@@ -1,29 +1,42 @@
-# OC_Projet4
-Appli pour enregistrer les scores d'un tournoi d'échecs et générer les appariements des joueurs
+# App de gestion de scores de tournoi d'échec
+Appli pour enregistrer les scores d'un tournoi d'échecs suisse et générer les appariements des joueurs
 
-Le Code est organisé selon le modèle "Model View Controller", en langage Python. 
+## Comment installer cette Appli sur votre ordinateur:
+Le Code est organisé selon le modèle "Model View Controller", en langage **[Python 3.10](https://www.python.org/downloads/)** (requis)
 
-(i) Pour fonctionner le code a besoin:
-- de Python3: https://www.python.org/downloads/
+<ol>
+<li> pour importer les fichiers de ce repository, tapez la commande git:
 
-- du package de gestion simple de base de données "tiny DB": tapez dans le terminal:
+`git clone https://github.com/PascalineBo/Chess_Tournament_Scores_App.git`</li>
 
- pip install tinydb
- 
- autrement dit, les Requirements sont, en plus de Python3:
- 
- tinydb==4.7.0
- flake8==4.0.1
- flake8-html==0.4.2
+ <li> positionnez-vous dans le répertoire Chess_Tournament_Scores_App:
+    
+- `cd Chess_Tournament_Scores_App` </li>
+  
+  <li>  créez votre dossier d'environnement virtuel:
 
-(ii) Télécharger les fichiers main.py, model.py, view.py, controller.py
+- `mkdir .venv`
+- `pip install pipenv`
+</li>
 
-(iii) ouvrez le fichier main.py et faites le tourner: commande: $ python3 main.py
+  <li> puis installez les packages requirements du projet à l'aide des commandes:
 
-(iv) saisissez les données demandées dans le terminal: (a) le programme commence par vous demander si vous souhaitez un rapport; si oui, tapez "O", si non, pour saisir le tournoi, tapez "N", puis les informations demandées pour un tournoi, 8 joueurs et 4 tours; les tours s'appellent "Round 1", "Round 2", etc...
+- `pipenv install tinydb`
+</li>
+</ol> 
 
-Les joueurs sont appariés selon les règles du tournoi suisse: 
-https://fr.wikipedia.org/wiki/Syst%C3%A8me_suisse#:~:text=Le%20principe%20du%20tournoi%20suisse,leur%20Classement%20Elo%20aux%20%C3%A9checs.
+## Comment utiliser l'Appli:
+
+<ol>
+
+<li> avec votre terminal, positionnez vous dans le dossier dans lequel vous avez installé l'Appli</li>
+<li> `python main.py`</li>
+
+<li> saisissez les données demandées dans le terminal: 
+- le programme commence par vous demander si vous souhaitez un rapport; si oui, tapez "O", si non, pour saisir le tournoi, tapez "N", puis les informations demandées pour un tournoi, 8 joueurs et 4 tours; les tours s'appellent "Round 1", "Round 2", etc...
+
+Les joueurs sont appariés selon les règles du [tournoi suisse](https://fr.wikipedia.org/wiki/Syst%C3%A8me_suisse#:~:text=Le%20principe%20du%20tournoi%20suisse,leur%20Classement%20Elo%20aux%20%C3%A9checs) 
+
 
 (v) vous pouvez consulter le rapport du tournoi dans le fichier créé: 'databases.json'
 
