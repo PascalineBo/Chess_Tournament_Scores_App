@@ -72,4 +72,6 @@ Vous aurez alors un dossier flake-report où vous aurez le rapport d'erreurs év
 Ci-joint les spécifications techniques demandées pour ce code:
 
 [Centre échecs - spécification technique (11).docx](https://github.com/MargueriteEffren/OC_Projet4/files/8660324/Centre.echecs.-.specification.technique.11.docx)
+
+
 [Centre échecs - spécification technique.odt](https://github.com/MargueriteEffren/OC_Projet4/files/8660332/Centre.echecs.-.specification.technique.odt)
