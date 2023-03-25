@@ -31,7 +31,9 @@ Le Code est organisé selon le modèle "Model View Controller", en langage **[Py
 
 <li> avec votre terminal, positionnez vous dans le dossier dans lequel vous avez installé l'Appli</li>
 <li>
+ 
  `python main.py`
+ 
  </li>
 
 <li> saisissez les données demandées dans le terminal: 
