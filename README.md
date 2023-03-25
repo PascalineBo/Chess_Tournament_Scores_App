@@ -30,13 +30,16 @@ Le Code est organisé selon le modèle "Model View Controller", en langage **[Py
 <ol>
 
 <li> avec votre terminal, positionnez vous dans le dossier dans lequel vous avez installé l'Appli</li>
-<li> `python main.py`</li>
+<li>
+ `python main.py`
+ </li>
 
 <li> saisissez les données demandées dans le terminal: 
+ 
 - le programme commence par vous demander si vous souhaitez un rapport; si oui, tapez "O", si non, pour saisir le tournoi, tapez "N", puis les informations demandées pour un tournoi, 8 joueurs et 4 tours; les tours s'appellent "Round 1", "Round 2", etc...
 
-Les joueurs sont appariés selon les règles du [tournoi suisse](https://fr.wikipedia.org/wiki/Syst%C3%A8me_suisse#:~:text=Le%20principe%20du%20tournoi%20suisse,leur%20Classement%20Elo%20aux%20%C3%A9checs) 
-
+Les joueurs sont appariés selon les règles du [tournoi suisse](https://fr.wikipedia.org/wiki/Syst%C3%A8me_suisse#:~:text=Le%20principe%20du%20tournoi%20suisse,leur%20Classement%20Elo%20aux%20%C3%A9checs) .
+ </li>
 
 (v) vous pouvez consulter le rapport du tournoi dans le fichier créé: 'databases.json'
 
